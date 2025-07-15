@@ -1,0 +1,4 @@
+enum PagesEnum {
+  home,
+  newShow,
+}
