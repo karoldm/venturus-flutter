@@ -12,17 +12,36 @@ class NotFound extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            '404 - Página não encontrada',
-            style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.red[300],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Column(
+              children: [
+                Text(
+                  "404",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                SizedBox(height: 8),
+                Text("Página não encontrada",
+                    style: TextStyle(fontSize: 16, color: Colors.white70)),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
+          FilledButton.icon(
+              icon: const Icon(Icons.home),
               onPressed: () {
                 context.go('/');
               },
-              child: const Text("Voltar para home"))
+              label: const Text(
+                "Voltar para home",
+              ))
         ],
       ),
     ));
