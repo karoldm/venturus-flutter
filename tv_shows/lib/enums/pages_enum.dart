@@ -1,4 +1,4 @@
 enum PagesEnum {
   home,
-  newShow,
+  showForm,
 }

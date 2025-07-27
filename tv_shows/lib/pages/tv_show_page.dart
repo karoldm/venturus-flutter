@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tv_shows/components/tv_show_card.dart';
-import 'package:tv_shows/models/tv_show.dart';
+import 'package:provider/provider.dart';
+import 'package:tv_shows/providers/tv_shows.dart';
+import 'package:tv_shows/widgets/tv_show_card.dart';
 
 class TvShowPage extends StatefulWidget {
-  final List<TvShow> showsList;
-  const TvShowPage({super.key, required this.showsList});
+  const TvShowPage({super.key});
 
   @override
   State<TvShowPage> createState() => _TvShowPageState();
@@ -15,11 +15,12 @@ class _TvShowPageState extends State<TvShowPage> {
 
   @override
   Widget build(BuildContext context) {
+    final shows = context.watch<TvShowsProvider>().tvShows;
     return ListView.builder(
         itemBuilder: (context, index) {
-          final tvShow = widget.showsList[index];
-          return TvShowCard(tvShow: tvShow, index: index + 1);
+          final tvShow = shows[index];
+          return TvShowCard(tvShow: tvShow, index: index);
         },
-        itemCount: widget.showsList.length);
+        itemCount: shows.length);
   }
 }

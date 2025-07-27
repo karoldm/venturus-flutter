@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const color = Color.fromARGB(255, 119, 0, 255);
+const color = Color.fromARGB(255, 158, 74, 255);
 
 var colorScheme = ColorScheme.fromSeed(
   seedColor: color,

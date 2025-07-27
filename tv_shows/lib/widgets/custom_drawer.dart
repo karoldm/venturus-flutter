@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tv_shows/enums/pages_enum.dart';
+import 'package:provider/provider.dart';
+import 'package:tv_shows/providers/theme_app.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final bool isDarkMode;
-  final VoidCallback onThemeSwitch;
-  final Function(PagesEnum page) onPageSelected;
-
   const CustomDrawer({
     super.key,
-    required this.isDarkMode,
-    required this.onThemeSwitch,
-    required this.onPageSelected,
   });
 
   @override
@@ -36,7 +31,8 @@ class CustomDrawer extends StatelessWidget {
                   const SizedBox(height: 8),
                   ElevatedButton.icon(
                     label: const Text('Mudar Tema'),
-                    icon: !isDarkMode
+                    icon: context.watch<AppThemeProvider>().themeMode ==
+                            ThemeMode.dark
                         ? const Icon(
                             Icons.nightlight_round_sharp,
                             size: 24,
@@ -45,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
                             Icons.wb_sunny_outlined,
                             size: 24,
                           ),
-                    onPressed: onThemeSwitch,
+                    onPressed: context.read<AppThemeProvider>().switchMode,
                   )
                 ],
               ),
@@ -55,16 +51,16 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text("Home"),
             onTap: () {
-              onPageSelected(PagesEnum.home);
               Navigator.pop(context);
+              context.go('/');
             },
           ),
           ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text("Adicionar Série"),
             onTap: () {
-              onPageSelected(PagesEnum.newShow);
               Navigator.pop(context);
+              context.go('/new');
             },
           ),
         ],
