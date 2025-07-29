@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class StarRating extends StatefulWidget {
-  final Function(int rating) onRatingChanged;
-  final int initialRating;
+  final Function(double rating) onRatingChanged;
+  final double initialRating;
 
   const StarRating(
       {super.key, required this.onRatingChanged, required this.initialRating});
@@ -12,7 +12,7 @@ class StarRating extends StatefulWidget {
 }
 
 class _StarRatingState extends State<StarRating> {
-  late int rating;
+  late double rating;
 
   @override
   void initState() {

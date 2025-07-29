@@ -48,19 +48,19 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text("Home"),
+            leading: const Icon(Icons.search),
+            title: const Text("Buscar Séries"),
             onTap: () {
               Navigator.pop(context);
-              context.go('/');
+              context.go('/search');
             },
           ),
           ListTile(
-            leading: const Icon(Icons.add_circle_outline),
-            title: const Text("Adicionar Série"),
+            leading: const Icon(Icons.favorite),
+            title: const Text("Séries Favoritas"),
             onTap: () {
               Navigator.pop(context);
-              context.go('/new');
+              context.go('/');
             },
           ),
         ],
