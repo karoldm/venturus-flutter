@@ -1,5 +1,5 @@
-import 'package:app4_receitas/ui/base_screen.dart';
-import 'package:app4_receitas/ui/recipes/recipes_view.dart';
+import 'package:recipes/ui/base_screen.dart';
+import 'package:recipes/ui/recipes/recipes_view.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {

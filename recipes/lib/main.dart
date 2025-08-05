@@ -1,11 +1,26 @@
-import 'package:app4_receitas/routes/app_router.dart';
-import 'package:app4_receitas/utils/theme/custom_theme_controller.dart';
+import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/routes/app_router.dart';
+import 'package:recipes/utils/config/env.dart';
+import 'package:recipes/utils/theme/custom_theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   // Garante que o Flutter está inicializado
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Carrega as variáveis de ambiente do arquivo .env
+  await Env.init();
+
+  // inicializa o Supabase
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseAnonKey,
+  );
+
+  // inicializa os serviços que serão injetados
+  await setupDependencies();
 
   runApp(const MainApp());
 }
@@ -15,7 +30,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // * Get.put
     // Usado para injetar dependências no GetX
     final theme = Get.put(CustomThemeController());

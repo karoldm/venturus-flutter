@@ -1,11 +1,10 @@
-import 'package:app4_receitas/utils/theme/custom_theme.dart';
+import 'package:recipes/utils/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // * GetxController
 // Usado para gerenciar o estado
 class CustomThemeController extends GetxController {
-
   // * GetX Reactive Variables
   // Usado para gerenciar o estado isDark
   // obs - é um método do GetX que torna a variável reativa

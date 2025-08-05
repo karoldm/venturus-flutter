@@ -1,4 +1,4 @@
-import 'package:app4_receitas/data/models/recipe.dart';
+import 'package:recipes/data/models/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,12 +24,12 @@ class RecipeCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) =>
                     loadingProgress == null
-                    ? child
-                    : Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
+                        ? child
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                 errorBuilder: (context, child, stackTrace) => Container(
                   height: 200,
                   width: double.infinity,
