@@ -25,7 +25,7 @@ var customTheme = ThemeData(
       color: colorScheme.onPrimary,
     ),
   ),
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: colorScheme.secondaryContainer,
     shadowColor: colorScheme.onSurface,
     elevation: 5,
@@ -48,7 +48,7 @@ var customThemeDark = ThemeData(
       color: colorSchemeDark.primary,
     ),
   ),
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: colorSchemeDark.secondaryContainer,
     shadowColor: colorSchemeDark.onSurface,
     elevation: 5,

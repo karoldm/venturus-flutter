@@ -6,6 +6,9 @@ import 'package:tv_shows/providers/tv_shows.dart';
 import 'package:tv_shows/core/theme.dart';
 
 void main() {
+  // garante que o Flutter seja inicializado antes de executar qualquer código
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider<TvShowsProvider>(

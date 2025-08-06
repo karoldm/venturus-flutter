@@ -28,8 +28,7 @@ class _TvShowGridState extends State<TvShowGrid> {
       itemCount: widget.tvShows.length,
       itemBuilder: (context, index) {
         final tvShow = widget.tvShows[index];
-        final isFavorite =
-            provider.favoriteTvShows.any((show) => show.id == tvShow.id);
+
         return Stack(
           children: [
             GestureDetector(
@@ -93,23 +92,29 @@ class _TvShowGridState extends State<TvShowGrid> {
                 ),
               ),
             ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: IconButton(
-                  style: IconButton.styleFrom(backgroundColor: Colors.black54),
-                  onPressed: () {
-                    if (isFavorite) {
-                      provider.removeFavoriteTvShow(tvShow, context);
-                    } else {
-                      provider.addFavoriteTvShow(tvShow, context);
-                    }
-                  },
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.white,
-                  )),
-            )
+            FutureBuilder(
+                future: provider.isFavorite(tvShow),
+                builder: (context, snapshor) {
+                  final isFavorite = snapshor.data ?? false;
+                  return Positioned(
+                    top: 8,
+                    right: 8,
+                    child: IconButton(
+                        style: IconButton.styleFrom(
+                            backgroundColor: Colors.black54),
+                        onPressed: () {
+                          if (isFavorite) {
+                            provider.removeFromFavorites(tvShow);
+                          } else {
+                            provider.addToFavorites(tvShow);
+                          }
+                        },
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.white,
+                        )),
+                  );
+                })
           ],
         );
       },

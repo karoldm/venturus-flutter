@@ -66,8 +66,6 @@ class _TvShowPageState extends State<TvShowPage> {
           }
 
           final tvShow = snapshot.data!;
-          final isFavorite =
-              provider.favoriteTvShows.any((show) => show.id == widget.id);
 
           return Padding(
             padding: const EdgeInsets.all(16),
@@ -130,21 +128,29 @@ class _TvShowPageState extends State<TvShowPage> {
                   const SizedBox(height: 16),
                   Text(tvShow.summary),
                   const SizedBox(height: 32),
-                  FilledButton.icon(
-                      style: FilledButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 48),
-                      ),
-                      label: Text(isFavorite ? 'Desfavoritar' : 'Favoritar'),
-                      onPressed: () {
-                        if (isFavorite) {
-                          provider.removeFavoriteTvShow(tvShow, context);
-                        } else {
-                          provider.addFavoriteTvShow(tvShow, context);
-                        }
-                      },
-                      icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                      )),
+                  FutureBuilder(
+                      future: provider.isFavorite(tvShow),
+                      builder: (context, snapshot) {
+                        final isFavorite = snapshot.data ?? false;
+                        return FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 48),
+                            ),
+                            label:
+                                Text(isFavorite ? 'Desfavoritar' : 'Favoritar'),
+                            onPressed: () {
+                              if (isFavorite) {
+                                provider.removeFromFavorites(tvShow);
+                              } else {
+                                provider.addToFavorites(tvShow);
+                              }
+                            },
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                            ));
+                      }),
                   const SizedBox(height: 16),
                   OutlinedButton.icon(
                       style: FilledButton.styleFrom(

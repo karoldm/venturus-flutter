@@ -3,10 +3,87 @@ import 'package:tv_shows/models/tv_show.dart';
 import 'package:tv_shows/services/tv_shows_service.dart';
 
 class TvShowsProvider extends ChangeNotifier {
-  final TvShowsService _service = TvShowsService();
-  final List<TvShow> _favoriteTvShows = [];
+  late final TvShowsService _service;
+
+  TvShowsProvider() {
+    _service = TvShowsService();
+    initialize();
+  }
+
+  List<TvShow> _favoriteTvShows = [];
+  bool _isLoading = false;
+  String? _errorMessage;
 
   List<TvShow> get favoriteTvShows => _favoriteTvShows;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+  bool get hasFavorites => _favoriteTvShows.isNotEmpty;
+
+// local database
+  Future<void> initialize() async {
+    await load();
+  }
+
+  void _setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
+  }
+
+  void _setError(String? error) {
+    _errorMessage = error;
+    notifyListeners();
+  }
+
+  Future<void> load() async {
+    try {
+      _setLoading(true);
+      _setError(null);
+      _favoriteTvShows = await _service.getAll();
+    } catch (e) {
+      _setError('Falha ao carregar séries favoritas: ${e.toString()}');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> addToFavorites(TvShow tvShow) async {
+    await _service.insert(tvShow);
+    _favoriteTvShows.add(tvShow);
+    notifyListeners();
+  }
+
+  Future<void> removeFromFavorites(TvShow tvShow) async {
+    await _service.delete(tvShow.id);
+    _favoriteTvShows.removeWhere((show) => show.id == tvShow.id);
+    notifyListeners();
+  }
+
+  Future<bool> isFavorite(TvShow tvShow) async {
+    try {
+      return await _service.isFavorite(tvShow);
+    } catch (e) {
+      _setError('Falha em verificar se é favorita: ${e.toString()}');
+      return false;
+    }
+  }
+
+  void sortByName(bool ascending) {
+    _favoriteTvShows.sort(
+      (a, b) => ascending ? a.name.compareTo(b.name) : b.name.compareTo(a.name),
+    );
+    notifyListeners();
+  }
+
+  void sortByRating(bool ascending) {
+    _favoriteTvShows.sort(
+      (a, b) => ascending
+          ? a.rating.compareTo(b.rating)
+          : b.rating.compareTo(a.rating),
+    );
+    notifyListeners();
+  }
+
+  // external API
 
   Future<List<TvShow>> searchTvShows(String query) async {
     try {
@@ -26,41 +103,5 @@ class TvShowsProvider extends ChangeNotifier {
       debugPrint('Erro ao buscar série por ID: $e');
       rethrow;
     }
-  }
-
-  void addFavoriteTvShow(TvShow tvShow, BuildContext context) {
-    favoriteTvShows.add(tvShow);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Série adicionada com sucesso!',
-          textAlign: TextAlign.center,
-        ),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    notifyListeners();
-  }
-
-  void removeFavoriteTvShow(TvShow tvShow, BuildContext context) {
-    final index = favoriteTvShows.indexWhere(
-      (show) => show.name.toLowerCase() == tvShow.name.toLowerCase(),
-    );
-    favoriteTvShows.removeAt(index);
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${tvShow.name} excluída!'),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'Desfazer',
-          onPressed: () {
-            favoriteTvShows.insert(index, tvShow);
-            notifyListeners();
-          },
-        ),
-      ),
-    );
-    notifyListeners();
   }
 }

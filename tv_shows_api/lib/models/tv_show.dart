@@ -1,5 +1,5 @@
 class TvShow {
-  final String id;
+  final int id;
   final String name;
   final String imageUrl;
   final String webChannel;
@@ -17,7 +17,7 @@ class TvShow {
 
   factory TvShow.fromJson(Map<String, dynamic> json) {
     return TvShow(
-      id: json['id'].toString(),
+      id: json['id'] as int,
       name: json['name'] as String,
       imageUrl: json['image'] != null
           ? (json['image']['medium'] as String)
@@ -28,5 +28,16 @@ class TvShow {
       rating: (json['rating']['average'] ?? 0) as double,
       summary: json['summary'] as String? ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'imageUrl': imageUrl,
+      'name': name,
+      'webChannel': webChannel,
+      'rating': rating,
+      'summary': summary,
+    };
   }
 }
