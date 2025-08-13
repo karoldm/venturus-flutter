@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipes/di/service_locator.dart';
-import 'package:recipes/ui/recipes/recipes_viewModel.dart';
+import 'package:recipes/ui/recipes/recipes_viewmodel.dart';
 import 'package:recipes/ui/widgets/recipe_card.dart';
 
 class RecipesView extends StatefulWidget {
