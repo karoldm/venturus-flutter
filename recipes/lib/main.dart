@@ -1,7 +1,7 @@
 import 'package:recipes/di/service_locator.dart';
 import 'package:recipes/routes/app_router.dart';
 import 'package:recipes/utils/config/env.dart';
-import 'package:recipes/utils/theme/custom_theme_controller.dart';
+import 'package:recipes/controllers/custom_theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,10 +14,7 @@ Future<void> main() async {
   await Env.init();
 
   // inicializa o Supabase
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
 
   // inicializa os serviços que serão injetados
   await setupDependencies();

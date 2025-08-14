@@ -8,6 +8,11 @@ class AuthService {
 
   User? get currentUser => _supabaseClient.auth.currentUser;
 
+  // Stream para ouvir mudanças na autenticação
+  // o próprio supabase já fornece um stream de mudanças
+  Stream<AuthState> get authStateChanges =>
+      _supabaseClient.auth.onAuthStateChange;
+
   Future<Either<AppError, AuthResponse>> signInWithPassword({
     required String email,
     required String password,
@@ -48,5 +53,77 @@ class AuthService {
     }
   }
 
-  // TODO implement signUpWithPassword
+  Future<Either<AppError, AuthResponse>> signUp({
+    required String email,
+    required String password,
+    required String username,
+    required String avatarUrl,
+  }) async {
+    try {
+      // verificar se o username já existe
+      final existingUsername = await _supabaseClient
+          .from('profiles')
+          .select()
+          .eq('username', username)
+          .maybeSingle();
+      if (existingUsername != null) {
+        return Left(AppError('Esse nome de usuário já existe.'));
+      }
+
+      final result = await insertUser(email: email, password: password);
+      return result.fold(
+        ifLeft: (left) => Left(left),
+        ifRight: (right) async {
+          await _supabaseClient.from('profiles').insert({
+            'id': right.user!.id,
+            'username': username,
+            'avatar_url': avatarUrl,
+          });
+          return Right(right);
+        },
+      );
+    } on PostgrestException catch (error) {
+      switch (error.code) {
+        case '23505':
+          return Left(AppError('Esse email já está cadastrado.'));
+        default:
+          return Left(AppError('Erro ao cadastrar usuário.', error));
+      }
+    } catch (error) {
+      return Left(AppError('Erro desconhecido ao cadastrar usuário.', error));
+    }
+  }
+
+  Future<Either<AppError, AuthResponse>> insertUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _supabaseClient.auth.signUp(
+        email: email,
+        password: password,
+      );
+      return Right(response);
+    } on AuthException catch (error) {
+      switch (error.message) {
+        case 'email not confirmed':
+          return Left(
+            AppError('Email não confirmado. Verifique sua caixa de entrada.'),
+          );
+        default:
+          return Left(AppError('Erro ao cadastrar usuário.'));
+      }
+    }
+  }
+
+  Future<Either<AppError, void>> signOut() async {
+    try {
+      await _supabaseClient.auth.signOut();
+      return Right(null);
+    } on AuthException catch (error) {
+      return Left(AppError('Erro ao fazer logout.', error));
+    } catch (error) {
+      return Left(AppError('Erro inesperado ao sair.', error));
+    }
+  }
 }

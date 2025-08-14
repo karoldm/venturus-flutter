@@ -1,4 +1,4 @@
-import 'package:recipes/utils/theme/custom_theme_controller.dart';
+import 'package:recipes/controllers/custom_theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';

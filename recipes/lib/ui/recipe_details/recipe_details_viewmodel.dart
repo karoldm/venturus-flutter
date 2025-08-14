@@ -1,10 +1,12 @@
 import 'package:recipes/data/models/recipe.dart';
+import 'package:recipes/data/repositories/auth_repository.dart';
 import 'package:recipes/data/repositories/recipe_repository.dart';
 import 'package:recipes/di/service_locator.dart';
 import 'package:get/get.dart';
 
 class RecipeDetailViewModel extends GetxController {
   final _repository = getIt<RecipeRepository>();
+  final _authRepository = getIt<AuthRepository>();
 
   final Rxn<Recipe> _recipe = Rxn<Recipe>();
   final RxBool _isLoading = false.obs;
@@ -45,13 +47,19 @@ class RecipeDetailViewModel extends GetxController {
   }
 
   Future<void> toggleFavorite() async {
-    final currentUserId = recipe!.userId;
+    var userId = '';
+    await _authRepository.currentUser.then(
+      (result) => result.fold(
+        ifLeft: (left) => _errorMessage.value = left.message,
+        ifRight: (right) => userId = right.id,
+      ),
+    );
     final recipeId = recipe!.id;
 
     if (_isFavorite.value) {
-      await removeFromFavorites(recipeId, currentUserId);
+      await removeFromFavorites(recipeId, userId);
     } else {
-      await addToFavorites(recipeId, currentUserId);
+      await addToFavorites(recipeId, userId);
     }
   }
 
