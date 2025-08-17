@@ -88,7 +88,26 @@ class AuthViewModel extends GetxController {
     _isSubmitting.value = false;
   }
 
-  Future<void> register() async {}
+  Future<void> register() async {
+    final response = await _repository.signUp(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
+      avatarUrl: avatarUrlController.text,
+    );
+
+    response.fold(
+      ifLeft: (left) {
+        _errorMessage.value = left.message;
+      },
+      ifRight: (right) {
+        print('Usuário registrado com sucesso');
+        _clearFields();
+        _errorMessage.value = '';
+        _isLoginMode.value = true;
+      },
+    );
+  }
 
   Future<void> login() async {
     final response = await _repository.signInWithPassword(

@@ -44,5 +44,21 @@ class AuthRepository extends GetxController {
     return await _service.signOut();
   }
 
-  // TODO: Implement signUp method
+  Future<Either<AppError, void>> signUp({
+    required String email,
+    required String password,
+    required String username,
+    required String avatarUrl,
+  }) async {
+    final result = await _service.signUp(
+      email: email,
+      password: password,
+      username: username,
+      avatarUrl: avatarUrl,
+    );
+    return result.fold(
+      ifLeft: (left) => Left(left),
+      ifRight: (right) => Right(right),
+    );
+  }
 }

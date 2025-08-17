@@ -1,4 +1,5 @@
 import 'package:dart_either/dart_either.dart';
+import 'package:flutter/foundation.dart';
 import 'package:recipes/di/service_locator.dart';
 import 'package:recipes/utils/errors/app_error.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,14 +25,15 @@ class AuthService {
       );
       return Right(response);
     } on AuthException catch (error) {
-      switch (error.code) {
-        case 'invalid login credentials':
+      switch (error.message) {
+        case 'Invalid login credentials':
           return Left(
             AppError('Usuário não cadastrado ou credenciais inválidas.'),
           );
         case "Email not confirmed":
           return Left(AppError('Email não confirmado.'));
         default:
+          debugPrint(error.code);
           return Left(AppError('Erro ao fazer login.', error));
       }
     }
@@ -87,6 +89,7 @@ class AuthService {
         case '23505':
           return Left(AppError('Esse email já está cadastrado.'));
         default:
+          debugPrint(error.toString());
           return Left(AppError('Erro ao cadastrar usuário.', error));
       }
     } catch (error) {
@@ -106,11 +109,12 @@ class AuthService {
       return Right(response);
     } on AuthException catch (error) {
       switch (error.message) {
-        case 'email not confirmed':
+        case 'Email not confirmed':
           return Left(
             AppError('Email não confirmado. Verifique sua caixa de entrada.'),
           );
         default:
+          debugPrint(error.toString());
           return Left(AppError('Erro ao cadastrar usuário.'));
       }
     }
