@@ -33,11 +33,11 @@ class AppRouter {
       // e realizar redirects se necessário
       refreshListenable: _authStateNotifier,
       routes: [
+        GoRoute(path: '/auth', builder: (context, state) => AuthView()),
         ShellRoute(
           builder: (context, state, child) => BaseScreen(child: child),
           routes: [
             GoRoute(path: '/', builder: (context, state) => RecipesView()),
-            GoRoute(path: '/auth', builder: (context, state) => AuthView()),
             GoRoute(
               path: '/recipe/:id',
               builder: (context, state) {

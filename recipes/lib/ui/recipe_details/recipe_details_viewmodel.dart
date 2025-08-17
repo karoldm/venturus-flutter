@@ -23,7 +23,13 @@ class RecipeDetailViewModel extends GetxController {
       _isLoading.value = true;
       _errorMessage.value = '';
       _recipe.value = await _repository.getRecipeById(id);
-      final userId = recipe!.userId;
+      var userId = '';
+      await _authRepository.currentUser.then(
+        (result) => result.fold(
+          ifLeft: (left) => _errorMessage.value = left.message,
+          ifRight: (right) => userId = right.id,
+        ),
+      );
       _isFavorite.value = await isRecipeFavorite(id, userId);
     } catch (e) {
       _errorMessage.value = 'Falha ao buscar receita: ${e.toString()}';

@@ -41,20 +41,45 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.restaurant_menu),
+          icon: Icon(
+            Icons.restaurant_menu,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           label: 'Receitas',
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.favorite,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          label: 'Favoritos',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          label: 'Perfil',
+        ),
         BottomNavigationBarItem(
           icon: Obx(
             () => !theme.isDark.value
-                ? Icon(Icons.nightlight_round_sharp, size: 24)
-                : Icon(Icons.wb_sunny_outlined, size: 24),
+                ? Icon(
+                    Icons.nightlight_round_sharp,
+                    size: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : Icon(
+                    Icons.wb_sunny_outlined,
+                    size: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
           ),
           label: 'Tema',
         ),
       ],
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       currentIndex: _currentIndex,
       onTap: _onItemTapped,
     );

@@ -7,14 +7,14 @@ import 'package:recipes/di/service_locator.dart';
 class ProfileViewModel extends GetxController {
   final _repository = getIt<AuthRepository>();
 
+  // Rxn é usado quando o valor pode ser nulo
+  // iniciar por padrão como null
   final _profile = Rxn<UserProfile>();
+  // .obs é usado para tipos primitos ou quando você tem um valor inicial
   final _isLoading = false.obs;
   final _errorMessage = ''.obs;
 
-  // Rxn é usado quando o valor pode ser nulo
-  // iniciar por padrão como null
   Rxn<UserProfile> get profile => _profile;
-  // .obs é usado para tipos primitos ou quando você tem um valor inicial
   bool get isLoading => _isLoading.value;
   String? get errorMessage => _errorMessage.value;
 
@@ -28,5 +28,13 @@ class ProfileViewModel extends GetxController {
     _isLoading.value = false;
   }
 
-  // TODO: signout
+  Future<void> signOut() async {
+    _isLoading.value = true;
+    final result = await _repository.signOut();
+    result.fold(
+      ifLeft: (left) => _errorMessage.value = left.message,
+      ifRight: (_) => _profile.value = null,
+    );
+    _isLoading.value = false;
+  }
 }

@@ -67,7 +67,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
         child: Column(
           children: [
             Image.network(
-              recipe!.image!,
+              recipe?.image! ?? '',
               height: 400,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -91,7 +91,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
               child: Column(
                 children: [
                   Text(
-                    recipe.name,
+                    recipe?.name ?? '',
                     style: GoogleFonts.dancingScript(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -100,9 +100,11 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  RecipeRowDetails(recipe: recipe),
+                  recipe != null
+                      ? RecipeRowDetails(recipe: recipe)
+                      : Container(),
                   const SizedBox(height: 16),
-                  recipe.ingredients.isNotEmpty
+                  recipe?.ingredients.isNotEmpty ?? false
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -114,12 +116,12 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(recipe.ingredients.join('\n')),
+                            Text(recipe?.ingredients.join('\n') ?? ''),
                           ],
                         )
                       : Text('Nenhum ingrediente listado.'),
                   const SizedBox(height: 16),
-                  recipe.instructions.isNotEmpty
+                  recipe?.instructions.isNotEmpty ?? false
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -131,7 +133,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(recipe.instructions.join('\n')),
+                            Text(recipe?.instructions.join('\n') ?? ''),
                           ],
                         )
                       : Text('Nenhuma instrução :('),
@@ -139,14 +141,22 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      ElevatedButton.icon(
                         onPressed: () => context.go('/'),
-                        child: Text('VOLTAR'),
+                        icon: Icon(Icons.arrow_back),
+                        label: Text('Voltar'),
                       ),
-                      ElevatedButton(
+                      const SizedBox(width: 16),
+                      ElevatedButton.icon(
                         onPressed: () => viewModel.toggleFavorite(),
-                        child: Text(
-                          viewModel.isFavorite ? 'DESFAVORITAR' : 'FAVORITAR',
+                        icon: Icon(
+                          viewModel.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        label: Text(
+                          viewModel.isFavorite ? 'Desfavoritar' : 'Favoritar',
                         ),
                       ),
                     ],

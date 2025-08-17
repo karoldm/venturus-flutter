@@ -16,37 +16,40 @@ class _AuthViewState extends State<AuthView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Obx(
-          () => Form(
-            key: viewModel.formKey,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildHeader(),
-                    const SizedBox(height: 32),
-                    _buildEmailField(),
-                    const SizedBox(height: 16),
-                    _buildPasswordField(),
-                    const SizedBox(height: 16),
-                    if (!viewModel.isLoginMode) ...[
-                      _buildConfirmPasswordField(),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Obx(
+            () => Form(
+              key: viewModel.formKey,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 32),
+                      _buildHeader(),
+                      const SizedBox(height: 32),
+                      _buildEmailField(),
                       const SizedBox(height: 16),
-                      _buildUsernameField(),
+                      _buildPasswordField(),
                       const SizedBox(height: 16),
-                      _buildAvatarUrlField(),
+                      if (!viewModel.isLoginMode) ...[
+                        _buildConfirmPasswordField(),
+                        const SizedBox(height: 16),
+                        _buildUsernameField(),
+                        const SizedBox(height: 16),
+                        _buildAvatarUrlField(),
+                      ],
+                      const SizedBox(height: 32),
+                      _buildSubmitButton(context),
+                      const SizedBox(height: 32),
+                      _buildErrorMessage(),
+                      const SizedBox(height: 32),
+                      _buildToggleModeButton(),
                     ],
-                    const SizedBox(height: 32),
-                    _buildSubmitButton(context),
-                    const SizedBox(height: 32),
-                    _buildErrorMessage(),
-                    const SizedBox(height: 32),
-                    _buildToggleModeButton(),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -58,6 +61,7 @@ class _AuthViewState extends State<AuthView> {
 
   Widget _buildHeader() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(
           Icons.restaurant_menu,
@@ -71,6 +75,7 @@ class _AuthViewState extends State<AuthView> {
             fontSize: 48,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
         Text(
