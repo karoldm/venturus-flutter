@@ -81,6 +81,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       currentIndex: _currentIndex,
+      selectedItemColor: Theme.of(context).colorScheme.error,
       onTap: _onItemTapped,
     );
   }
