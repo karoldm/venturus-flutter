@@ -44,7 +44,7 @@ class AuthRepository extends GetxController {
     return await _service.signOut();
   }
 
-  Future<Either<AppError, void>> signUp({
+  Future<Either<AppError, UserProfile>> signUp({
     required String email,
     required String password,
     required String username,
@@ -58,7 +58,15 @@ class AuthRepository extends GetxController {
     );
     return result.fold(
       ifLeft: (left) => Left(left),
-      ifRight: (right) => Right(right),
+      ifRight: (right) async {
+        final user = right.user;
+        final profileResult = await _service.fetchUserProfile(user!.id);
+        return profileResult.fold(
+          ifLeft: (left) => Left(left),
+          ifRight: (profile) =>
+              Right(UserProfile.fromSupabase(user.toJson(), profile!)),
+        );
+      },
     );
   }
 }

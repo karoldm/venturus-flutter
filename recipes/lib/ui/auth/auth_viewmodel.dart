@@ -101,9 +101,10 @@ class AuthViewModel extends GetxController {
         _errorMessage.value = left.message;
       },
       ifRight: (right) {
-        print('Usuário registrado com sucesso');
+        debugPrint('Usuário registrado com sucesso: $right');
         _clearFields();
-        _errorMessage.value = '';
+        _errorMessage.value =
+            'E-mail de confirmação enviado. Verifique sua caixa de entrada.';
         _isLoginMode.value = true;
       },
     );
