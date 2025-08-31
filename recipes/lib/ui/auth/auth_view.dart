@@ -1,8 +1,11 @@
+import 'package:recipes/controllers/locale_controller.dart';
 import 'package:recipes/di/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/auth/auth_viewmodel.dart';
+import 'package:recipes/ui/widgets/language_selector.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -17,6 +20,8 @@ class _AuthViewState extends State<AuthView>
 
   late AnimationController _animationController;
   // late Animation<double> _animation;
+
+  final localeController = Get.find<LocaleController>();
 
   @override
   void initState() {
@@ -67,44 +72,60 @@ class _AuthViewState extends State<AuthView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Obx(
-            () => Form(
-              key: viewModel.formKey,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 32),
-                      _buildHeader(),
-                      const SizedBox(height: 32),
-                      _buildEmailField(),
-                      const SizedBox(height: 16),
-                      _buildPasswordField(),
-                      const SizedBox(height: 16),
-                      if (!viewModel.isLoginMode) ...[
-                        _buildConfirmPasswordField(),
-                        const SizedBox(height: 16),
-                        _buildUsernameField(),
-                        const SizedBox(height: 16),
-                        _buildAvatarUrlField(),
-                      ],
-                      const SizedBox(height: 32),
-                      _buildSubmitButton(context),
-                      const SizedBox(height: 32),
-                      _buildErrorMessage(),
-                      const SizedBox(height: 32),
-                      _buildToggleModeButton(),
-                    ],
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Obx(
+                () => Form(
+                  key: viewModel.formKey,
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 32),
+                          _buildHeader(l10n),
+                          const SizedBox(height: 32),
+                          _buildEmailField(l10n),
+                          const SizedBox(height: 16),
+                          _buildPasswordField(l10n),
+                          const SizedBox(height: 16),
+                          if (!viewModel.isLoginMode) ...[
+                            _buildConfirmPasswordField(l10n),
+                            const SizedBox(height: 16),
+                            _buildUsernameField(l10n),
+                            const SizedBox(height: 16),
+                            _buildAvatarUrlField(l10n),
+                          ],
+                          const SizedBox(height: 32),
+                          _buildSubmitButton(context, l10n),
+                          const SizedBox(height: 32),
+                          _buildErrorMessage(l10n),
+                          const SizedBox(height: 32),
+                          _buildToggleModeButton(l10n),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+            Positioned(
+              top: 32,
+              right: 8,
+              child: Obx(
+                () => LanguageSelector(
+                  onLanguageChanged: localeController.changeLocale,
+                  currentLocale: localeController.locale,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -144,14 +165,15 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _animatedLogo(controller: _animationController),
         const SizedBox(height: 16),
         Text(
-          'Eu Amo Cozinhar',
+          l10n.appTitle,
+
           style: GoogleFonts.dancingScript(
             fontSize: 48,
             fontWeight: FontWeight.bold,
@@ -160,21 +182,22 @@ class _AuthViewState extends State<AuthView>
         ),
         const SizedBox(height: 16),
         Text(
-          viewModel.isLoginMode ? 'Entre na sua conta' : 'Crie uma nova conta',
+          viewModel.isLoginMode ? l10n.signInSubtitle : l10n.signUpSubtitle,
+
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
         ),
       ],
     );
   }
 
-  Widget _buildEmailField() {
+  Widget _buildEmailField(AppLocalizations l10n) {
     return TextFormField(
       controller: viewModel.emailController,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: 'E-mail',
-        hintText: 'Digite seu e-mail',
+        labelText: l10n.emailLabel,
+        hintText: l10n.emailHint,
         prefixIcon: const Icon(Icons.email_outlined),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -182,15 +205,15 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField(AppLocalizations l10n) {
     return Obx(
       () => TextFormField(
         controller: viewModel.passwordController,
         obscureText: viewModel.obscurePassword,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          labelText: 'Senha',
-          hintText: 'Digite sua senha',
+          labelText: l10n.passwordLabel,
+          hintText: l10n.passwordHint,
           prefixIcon: const Icon(Icons.lock_outlined),
           suffixIcon: IconButton(
             icon: Icon(
@@ -207,14 +230,14 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildConfirmPasswordField() {
+  Widget _buildConfirmPasswordField(AppLocalizations l10n) {
     return TextFormField(
       controller: viewModel.confirmPasswordController,
       obscureText: viewModel.obscurePassword,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        labelText: 'Confirmar senha',
-        hintText: 'Digite novamente sua senha',
+        labelText: l10n.confirmPasswordLabel,
+        hintText: l10n.confirmPasswordHint,
         prefixIcon: const Icon(Icons.lock_outlined),
         suffixIcon: IconButton(
           icon: Icon(
@@ -230,13 +253,13 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildUsernameField() {
+  Widget _buildUsernameField(AppLocalizations l10n) {
     return TextFormField(
       controller: viewModel.usernameController,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: 'Usuário',
-        hintText: 'Digite seu nome de usuário',
+        labelText: l10n.usernameLabel,
+        hintText: l10n.usernameHint,
         prefixIcon: const Icon(Icons.person_outline),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -244,13 +267,13 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildAvatarUrlField() {
+  Widget _buildAvatarUrlField(AppLocalizations l10n) {
     return TextFormField(
       controller: viewModel.avatarUrlController,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
-        labelText: 'URL do Avatar',
-        hintText: 'Digite a URL do seu avatar',
+        labelText: l10n.avatarUrlLabel,
+        hintText: l10n.avatarUrlHint,
         prefixIcon: const Icon(Icons.image_outlined),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -258,7 +281,7 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildSubmitButton(BuildContext context) {
+  Widget _buildSubmitButton(BuildContext context, AppLocalizations l10n) {
     return SizedBox(
       height: 50,
       child: ElevatedButton(
@@ -277,7 +300,9 @@ class _AuthViewState extends State<AuthView>
                 child: CircularProgressIndicator(strokeWidth: 2),
               )
             : Text(
-                viewModel.isLoginMode ? 'ENTRAR' : 'CADASTRAR',
+                viewModel.isLoginMode
+                    ? l10n.signInSubtitle
+                    : l10n.signUpSubtitle,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -287,17 +312,20 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildToggleModeButton() {
+  Widget _buildToggleModeButton(AppLocalizations l10n) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          viewModel.isLoginMode ? 'Não tem uma conta? ' : 'Já tem uma conta? ',
+          viewModel.isLoginMode
+              ? l10n.noAccountQuestion
+              : l10n.hasAccountQuestion,
         ),
         TextButton(
           onPressed: viewModel.isSubmitting ? null : viewModel.toggleMode,
           child: Text(
-            viewModel.isLoginMode ? 'Cadastre-se' : 'Entre aqui',
+            viewModel.isLoginMode ? l10n.signUpLink : l10n.signInLink,
+
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold,
@@ -308,7 +336,7 @@ class _AuthViewState extends State<AuthView>
     );
   }
 
-  Widget _buildErrorMessage() {
+  Widget _buildErrorMessage(AppLocalizations l10n) {
     return Obx(
       () => Visibility(
         visible: viewModel.errorMessage.isNotEmpty,
