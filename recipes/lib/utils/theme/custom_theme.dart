@@ -15,29 +15,28 @@ class CustomTheme {
     colorScheme = ColorScheme.fromSeed(
       seedColor: color,
       brightness: Brightness.light,
+      primary: Colors.orangeAccent,
     );
 
     colorSchemeDark = ColorScheme.fromSeed(
       seedColor: color,
       brightness: Brightness.dark,
+      primary: Colors.orangeAccent,
     );
 
     customTheme = ThemeData(
       colorScheme: colorScheme,
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: GoogleFonts.rubik().fontFamily,
       appBarTheme: AppBarTheme(
         centerTitle: true,
         toolbarHeight: 100,
         backgroundColor: colorScheme.primary,
-        titleTextStyle: GoogleFonts.lobster(
+        titleTextStyle: GoogleFonts.rubik(
           fontSize: 36,
           fontWeight: FontWeight.bold,
           color: colorScheme.onPrimary,
         ),
-        iconTheme: IconThemeData(
-          color: colorScheme.onPrimary,
-          size: 36,
-        ),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary, size: 36),
       ),
       cardTheme: CardThemeData(
         color: colorScheme.secondaryContainer,
@@ -50,20 +49,17 @@ class CustomTheme {
 
     customThemeDark = ThemeData(
       colorScheme: colorSchemeDark,
-      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontFamily: GoogleFonts.rubik().fontFamily,
       appBarTheme: AppBarTheme(
         centerTitle: true,
         toolbarHeight: 100,
         backgroundColor: colorSchemeDark.onPrimary,
-        titleTextStyle: GoogleFonts.lobster(
+        titleTextStyle: GoogleFonts.rubik(
           fontSize: 36,
           fontWeight: FontWeight.bold,
           color: colorSchemeDark.primary,
         ),
-        iconTheme: IconThemeData(
-          color: colorScheme.onPrimary,
-          size: 36,
-        ),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary, size: 36),
       ),
       cardTheme: CardThemeData(
         color: colorSchemeDark.secondaryContainer,

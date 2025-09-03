@@ -10,7 +10,7 @@ class CustomThemeController extends GetxController {
   // obs - é um método do GetX que torna a variável reativa
   // value - é usado para acessar o valor da variável reativa
   RxBool isDark = true.obs;
-  CustomTheme myTheme = CustomTheme(color: Colors.blueGrey);
+  CustomTheme myTheme = CustomTheme(color: Colors.orangeAccent);
   ThemeData get customTheme => myTheme.customTheme;
   ThemeData get customThemeDark => myTheme.customThemeDark;
   ThemeMode get themeMode => isDark.value ? ThemeMode.dark : ThemeMode.light;

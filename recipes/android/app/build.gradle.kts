@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.recipes"
+    namespace = "com.example.app4_receitas"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 

@@ -19,7 +19,7 @@ class _AuthViewState extends State<AuthView>
   final viewModel = getIt<AuthViewModel>();
 
   late AnimationController _animationController;
-  // late Animation<double> _animation;
+  late Animation<double> _animation;
 
   final localeController = Get.find<LocaleController>();
 
@@ -29,38 +29,42 @@ class _AuthViewState extends State<AuthView>
 
     // ao iniciar o estado, o _animationController fornece
     // valores em intervalos de 0 a 1
-    // _animationController =
-    //     AnimationController(
-    //       // vsync é um TikerProvider que ajuda a controlar a animação
-    //       // o Ticker envia um sinal de "tick" a cada frame
-    //       // e o AnimationController usa isso para atualizar a animação
-    //       // O tikerProvider nesse caso é fornecido pelo mixin SingleTickerProviderStateMixin
-    //       // Obs: SingleTickerProviderStateMixin porque eu tenho só um AnimationController
-    //       // se tivesse mais de um, eu usaria TickerProviderStateMixin
-    //       vsync: this,
-    //       duration: const Duration(milliseconds: 1000),
-    //     )..addStatusListener((listener) {
-    //       if (listener == AnimationStatus.completed) {
-    //         _animationController.reverse();
-    //       } else if (listener == AnimationStatus.dismissed) {
-    //         _animationController.forward();
-    //       }
-    //     });
+    _animationController =
+        AnimationController(
+          // vsync é um TikerProvider que ajuda a controlar a animação
+          // o Ticker envia um sinal de "tick" a cada frame
+          // e o AnimationController usa isso para atualizar a animação
+          // O tikerProvider nesse caso é fornecido pelo mixin SingleTickerProviderStateMixin
+          // Obs: SingleTickerProviderStateMixin porque eu tenho só um AnimationController
+          // se tivesse mais de um, eu usaria TickerProviderStateMixin
+          vsync: this,
+          duration: const Duration(milliseconds: 1000),
+        )..addStatusListener((listener) {
+          // Esse listener ouve mudanças no estado da animação
+          // e pode ser usado para fazer algo quando a animação
+          // completa ou recomeça
+          // Nesse caso, a animação fica indo e voltando
+          // if (listener == AnimationStatus.completed) {
+          //   _animationController.reverse();
+          // } else if (listener == AnimationStatus.dismissed) {
+          //   _animationController.forward();
+          // }
+        });
 
     // Tween define o intervalo de valores que a animação vai percorrer
     // nesse caso, de 50 a 200 (pode ser pixel, pode ser opacity, etc)
     // fazemos isso para mapear os valores gerados pelo AnimationController
     // de 0 a 1 para um intervalo de 100 a 120 (ou qualquer intervalo que você quiser)
-    // _animation =
-    //     Tween<double>(begin: 100.0, end: 120.0).animate(_animationController)
-    //       ..addListener(() {
-    //         // quando a animação é atualizada, o setState é chamado
-    //         // para atualizar a UI com o novo valor da animação
-    //         setState(() {});
-    //       });
+    _animation =
+        Tween<double>(begin: 100.0, end: 120.0).animate(_animationController)
+          ..addListener(() {
+            // quando a animação é atualizada, o setState é chamado
+            // para atualizar a UI com o novo valor da animação
+            setState(() {});
+          });
 
     // forward inicia a animação
-    //_animationController.forward();
+    _animationController.forward();
   }
 
   @override
@@ -153,7 +157,7 @@ class _AuthViewState extends State<AuthView>
         return Transform.rotate(
           angle: angleTween.value,
           child: SizedBox(
-            height: 200,
+            height: 150,
             child: Icon(
               Icons.restaurant_menu,
               size: sizeTween.value,
@@ -173,11 +177,7 @@ class _AuthViewState extends State<AuthView>
         const SizedBox(height: 16),
         Text(
           l10n.appTitle,
-
-          style: GoogleFonts.dancingScript(
-            fontSize: 48,
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.rubik(fontSize: 28, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
@@ -306,6 +306,7 @@ class _AuthViewState extends State<AuthView>
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
       ),
