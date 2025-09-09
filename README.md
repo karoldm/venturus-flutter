@@ -141,6 +141,5 @@ create table favorites (
 -- INSERIR SUAS INFORMAÇÕES DE PERFIL
 insert into profiles (id, username, avatar_url)
 values ('7799c317-7ff5-4eab-a3d8-d147363319cc', 'karoldm', 'https://avatars.githubusercontent.com/karoldm');
-delete from profiles;
 ```
 
