@@ -78,8 +78,8 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(height: 24),
             Text(
               user?.username ?? '',
-              style: GoogleFonts.dancingScript(
-                fontSize: 48,
+              style: GoogleFonts.rubik(
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
               ),

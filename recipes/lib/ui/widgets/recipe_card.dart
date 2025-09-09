@@ -1,14 +1,19 @@
 import 'package:recipes/data/models/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/ui/recipes/recipes_viewmodel.dart';
 
 class RecipeCard extends StatelessWidget {
-  const RecipeCard({super.key, required this.recipe});
-
+  final viewModel = getIt<RecipesViewModel>();
   final Recipe recipe;
+
+  RecipeCard({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite = viewModel.favRecipes.any((fav) => fav.id == recipe.id);
+
     return Card(
       margin: EdgeInsets.symmetric(vertical: 16),
       child: Container(
@@ -24,12 +29,12 @@ class RecipeCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) =>
                     loadingProgress == null
-                        ? child
-                        : Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
+                    ? child
+                    : Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                 errorBuilder: (context, child, stackTrace) => Container(
                   height: 200,
                   width: double.infinity,
@@ -39,18 +44,57 @@ class RecipeCard extends StatelessWidget {
               ),
             ),
             ListTile(
-              titleTextStyle: GoogleFonts.dancingScript(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                color: Colors.black87,
+              titleTextStyle: GoogleFonts.rubik(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
               ),
-              title: Text(recipe.name, textAlign: TextAlign.center),
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Text(recipe.name, textAlign: TextAlign.start),
+              ),
               subtitleTextStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.primary,
               ),
-              subtitle: Text('${recipe.cuisine}', textAlign: TextAlign.center),
+              subtitle: Text('${recipe.cuisine}', textAlign: TextAlign.start),
+              trailing: IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  size: 32,
+                  color: isFavorite ? Colors.red : Colors.white,
+                ),
+                onPressed: () {
+                  if (isFavorite) {
+                    viewModel.toggleFavorite(recipe);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${recipe.name} desfavoritada!'),
+                          duration: Duration(seconds: 3),
+                          action: SnackBarAction(
+                            label: 'DESFAZER',
+                            onPressed: () {
+                              viewModel.toggleFavorite(recipe);
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    viewModel.toggleFavorite(recipe);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${recipe.name} favoritada!'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
             ),
             const SizedBox(height: 8),
             Row(

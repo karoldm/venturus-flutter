@@ -62,7 +62,7 @@ void main() {
       expect(titleText.style?.fontWeight, FontWeight.w700);
       expect(
         titleText.style?.fontFamilyFallback,
-        equals(GoogleFonts.dancingScript().fontFamilyFallback),
+        equals(GoogleFonts.rubik().fontFamilyFallback),
       );
     });
 

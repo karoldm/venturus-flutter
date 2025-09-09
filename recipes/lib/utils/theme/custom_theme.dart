@@ -16,12 +16,14 @@ class CustomTheme {
       seedColor: color,
       brightness: Brightness.light,
       primary: Colors.orangeAccent,
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     );
 
     colorSchemeDark = ColorScheme.fromSeed(
       seedColor: color,
       brightness: Brightness.dark,
       primary: Colors.orangeAccent,
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     );
 
     customTheme = ThemeData(
@@ -38,10 +40,13 @@ class CustomTheme {
         ),
         iconTheme: IconThemeData(color: colorScheme.onPrimary, size: 36),
       ),
+      listTileTheme: ListTileThemeData(
+        textColor: colorScheme.onSecondaryContainer,
+      ),
       cardTheme: CardThemeData(
         color: colorScheme.secondaryContainer,
-        shadowColor: colorScheme.onSurface,
         elevation: 5,
+        shadowColor: Colors.transparent,
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
@@ -49,6 +54,9 @@ class CustomTheme {
 
     customThemeDark = ThemeData(
       colorScheme: colorSchemeDark,
+      listTileTheme: ListTileThemeData(
+        textColor: colorSchemeDark.onSecondaryContainer,
+      ),
       fontFamily: GoogleFonts.rubik().fontFamily,
       appBarTheme: AppBarTheme(
         centerTitle: true,
@@ -62,9 +70,9 @@ class CustomTheme {
         iconTheme: IconThemeData(color: colorScheme.onPrimary, size: 36),
       ),
       cardTheme: CardThemeData(
-        color: colorSchemeDark.secondaryContainer,
-        shadowColor: colorSchemeDark.onSurface,
+        color: Colors.black54,
         elevation: 5,
+        shadowColor: Colors.transparent,
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
