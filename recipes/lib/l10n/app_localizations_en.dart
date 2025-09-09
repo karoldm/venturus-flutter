@@ -48,10 +48,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avatarUrlHint => 'Enter your avatar URL';
 
   @override
-  String get signInButton => 'SIGN IN';
+  String get signInButton => 'Sign In';
 
   @override
-  String get signUpButton => 'SIGN UP';
+  String get signUpButton => 'Sign Up';
 
   @override
   String get noAccountQuestion => 'Don\'t have an account? ';
@@ -64,4 +64,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInLink => 'Sign in here';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get recipes => 'recipe(s)';
+
+  @override
+  String get addFavoriteRecipes => 'Add your favorite recipes!';
 }

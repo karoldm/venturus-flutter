@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/recipes/recipes_viewmodel.dart';
 import 'package:recipes/ui/widgets/recipe_card.dart';
 
@@ -47,6 +48,8 @@ class _RecipesViewState extends State<RecipesView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Obx(() {
       if (viewModel.isLoading) {
         return Center(
@@ -73,7 +76,7 @@ class _RecipesViewState extends State<RecipesView>
                   onPressed: () {
                     viewModel.loadRecipes();
                   },
-                  child: Text('TENTAR NOVAMENTE'),
+                  child: Text(l10n.tryAgain),
                 ),
               ],
             ),
@@ -92,7 +95,7 @@ class _RecipesViewState extends State<RecipesView>
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            '${viewModel.recipes.length} receitas(s)',
+                            '${viewModel.recipes.length} ${l10n.recipes}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -130,7 +133,7 @@ class _RecipesViewState extends State<RecipesView>
                           ),
                           const SizedBox(height: 32),
                           Text(
-                            'Adicione suas receitas favoritas!',
+                            l10n.addFavoriteRecipes,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,

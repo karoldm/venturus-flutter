@@ -48,10 +48,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get avatarUrlHint => 'Digite a URL do seu avatar';
 
   @override
-  String get signInButton => 'ENTRAR';
+  String get signInButton => 'Entrar';
 
   @override
-  String get signUpButton => 'CADASTRAR';
+  String get signUpButton => 'Cadastrar';
 
   @override
   String get noAccountQuestion => 'Não tem uma conta? ';
@@ -64,4 +64,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get signInLink => 'Entre aqui';
+
+  @override
+  String get tryAgain => 'Tentar novamente';
+
+  @override
+  String get recipes => 'receita(s)';
+
+  @override
+  String get addFavoriteRecipes => 'Adicione suas receitas favoritas!';
 }
