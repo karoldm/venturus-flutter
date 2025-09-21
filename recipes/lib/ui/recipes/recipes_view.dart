@@ -52,6 +52,7 @@ class _RecipesViewState extends State<RecipesView>
       _initialized = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         viewModel.loadRecipes(l10n);
+        _animationController.forward();
       });
     }
 

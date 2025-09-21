@@ -1,6 +1,6 @@
 import 'package:recipes/di/service_locator.dart';
 import 'package:recipes/l10n/app_localizations.dart';
-import 'package:recipes/ui/favorites/favorites_viewmodel.dart';
+import 'package:recipes/ui/recipes/recipes_viewmodel.dart';
 import 'package:recipes/ui/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -14,7 +14,8 @@ class FavoritesView extends StatefulWidget {
 }
 
 class _FavoritesViewState extends State<FavoritesView> {
-  final viewModel = getIt<FavoritesViewModel>();
+  final viewModel = getIt<RecipesViewModel>();
+
   bool _initialized = false;
 
   @override
@@ -24,7 +25,7 @@ class _FavoritesViewState extends State<FavoritesView> {
     if (!_initialized) {
       _initialized = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        viewModel.getFavRecipes(l10n);
+        viewModel.loadRecipes(l10n);
       });
     }
 
@@ -52,7 +53,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    viewModel.getFavRecipes(l10n);
+                    viewModel.loadRecipes(l10n);
                   },
                   child: Text(l10n.tryAgain),
                 ),
