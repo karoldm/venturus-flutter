@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipes/data/repositories/auth_repository.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 
 class AuthViewModel extends GetxController {
   final _repository = getIt<AuthRepository>();
@@ -28,46 +29,52 @@ class AuthViewModel extends GetxController {
   bool get isLoginMode => _isLoginMode.value;
   String get errorMessage => _errorMessage.value;
 
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) return 'Informe o e-mail';
+  String? validateEmail(String? value, AppLocalizations l10n) {
+    if (value == null || value.isEmpty) return l10n.errorEmailRequired;
     if (!RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
     ).hasMatch(value)) {
-      return 'E-mail inválido';
+      return l10n.errorEmailInvalid;
     }
     return null;
   }
 
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Informe a senha';
-    if (value.length < 8) return 'Mínimo 8 caracteres';
-    if (!RegExp(r'[a-z]').hasMatch(value)) return 'Precisa de letra minúscula';
-    if (!RegExp(r'[A-Z]').hasMatch(value)) return 'Precisa de letra maiúscula';
-    if (!RegExp(r'[0-9]').hasMatch(value)) return 'Precisa de número';
+  String? validatePassword(String? value, AppLocalizations l10n) {
+    if (value == null || value.isEmpty) return l10n.errorPasswordRequired;
+    if (value.length < 8) return l10n.errorPasswordTooShort;
+    if (!RegExp(r'[a-z]').hasMatch(value)) {
+      return l10n.errorPasswordNeedsLowercase;
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return l10n.errorPasswordNeedsUppercase;
+    }
+    if (!RegExp(r'[0-9]').hasMatch(value)) return l10n.errorPasswordNeedsNumber;
     if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>_\-+=\[\]\\/;]').hasMatch(value)) {
-      return 'Precisa de caractere especial';
+      return l10n.errorPasswordNeedsSpecialChar;
     }
     return null;
   }
 
-  String? validateConfirmPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Confirme a senha';
-    if (value != passwordController.text) return 'As senhas não coincidem';
+  String? validateConfirmPassword(String? value, AppLocalizations l10n) {
+    if (value == null || value.isEmpty) {
+      return l10n.errorConfirmPasswordRequired;
+    }
+    if (value != passwordController.text) return l10n.errorPasswordsDoNotMatch;
     return null;
   }
 
-  String? validateUsername(String? value) {
-    if (value == null || value.isEmpty) return 'Informe o nome de usuário';
-    if (value.length < 3) return 'Mínimo 3 caracteres';
+  String? validateUsername(String? value, AppLocalizations l10n) {
+    if (value == null || value.isEmpty) return l10n.errorUsernameRequired;
+    if (value.length < 3) return l10n.errorUsernameTooShort;
     return null;
   }
 
-  String? validateAvatarUrl(String? value) {
-    if (value == null || value.isEmpty) return 'Informe a URL do avatar';
+  String? validateAvatarUrl(String? value, AppLocalizations l10n) {
+    if (value == null || value.isEmpty) return l10n.errorAvatarUrlRequired;
     if (!RegExp(
       r'^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$',
     ).hasMatch(value)) {
-      return 'URL inválida';
+      return l10n.errorAvatarUrlInvalid;
     }
     return null;
   }
@@ -75,7 +82,7 @@ class AuthViewModel extends GetxController {
   void toggleObscurePassword() =>
       _obscurePassword.value = !_obscurePassword.value;
 
-  Future<void> submit() async {
+  Future<void> submit(AppLocalizations l10n) async {
     final valid = formKey.currentState?.validate() ?? false;
     if (!valid) return;
 
@@ -83,12 +90,12 @@ class AuthViewModel extends GetxController {
     if (isLoginMode) {
       await login();
     } else {
-      await register();
+      await register(l10n);
     }
     _isSubmitting.value = false;
   }
 
-  Future<void> register() async {
+  Future<void> register(AppLocalizations l10n) async {
     final response = await _repository.signUp(
       email: emailController.text,
       password: passwordController.text,
@@ -103,8 +110,7 @@ class AuthViewModel extends GetxController {
       ifRight: (right) {
         debugPrint('Usuário registrado com sucesso: $right');
         _clearFields();
-        _errorMessage.value =
-            'E-mail de confirmação enviado. Verifique sua caixa de entrada.';
+        _errorMessage.value = l10n.messageEmailConfirmationSent;
         _isLoginMode.value = true;
       },
     );
@@ -121,7 +127,7 @@ class AuthViewModel extends GetxController {
         _errorMessage.value = left.message;
       },
       ifRight: (right) {
-        print(right.toString());
+        debugPrint(right.toString());
         return;
       },
     );

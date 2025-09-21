@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:recipes/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/widgets/custom_bottom_navigation_bar.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -25,6 +26,8 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -32,7 +35,7 @@ class _BaseScreenState extends State<BaseScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Eu Amo Cozinhar', style: TextStyle(fontSize: 24)),
+              Text('${l10n.appTitle}', style: TextStyle(fontSize: 24)),
               Obx(() {
                 final user = controller.user.value;
 

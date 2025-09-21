@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -12,6 +13,8 @@ class CustomDrawer extends StatelessWidget {
     // * Get.find
     // Usado para encontrar uma instância já injetada do GetX
     final theme = Get.find<CustomThemeController>();
+
+    final l10n = AppLocalizations.of(context)!;
 
     return Drawer(
       child: Column(
@@ -25,7 +28,7 @@ class CustomDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Eu Amo Cozinhar',
+                    l10n.appTitle,
                     style: GoogleFonts.lobster(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 32,
@@ -44,7 +47,7 @@ class CustomDrawer extends StatelessWidget {
                           ? Icon(Icons.nightlight_round_sharp, size: 24)
                           : Icon(Icons.wb_sunny_outlined, size: 24),
                     ),
-                    label: Text('Mudar Tema'),
+                    label: Text(l10n.changeTheme),
                   ),
                 ],
               ),
@@ -60,7 +63,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.favorite),
-            title: Text('Favoritas'),
+            title: Text(l10n.favorites),
             onTap: () {
               Navigator.of(context).pop();
               context.go('/favorites');
@@ -68,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.search),
-            title: Text('Buscar'),
+            title: Text(l10n.search),
             onTap: () {
               Navigator.of(context).pop();
               context.go('/search');

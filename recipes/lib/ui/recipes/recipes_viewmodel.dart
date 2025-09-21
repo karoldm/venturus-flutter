@@ -3,6 +3,7 @@ import 'package:recipes/data/models/recipe.dart';
 import 'package:recipes/data/repositories/auth_repository.dart';
 import 'package:recipes/data/repositories/recipe_repository.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 
 class RecipesViewModel extends GetxController {
   final RecipeRepository _recipeRepository = getIt<RecipeRepository>();
@@ -20,7 +21,7 @@ class RecipesViewModel extends GetxController {
   bool get isLoading => _isLoading.value;
   String? get errorMessage => _errorMessage.value;
 
-  Future<void> loadRecipes() async {
+  Future<void> loadRecipes(AppLocalizations l10n) async {
     try {
       _isLoading.value = true;
       _errorMessage.value = '';
@@ -35,13 +36,13 @@ class RecipesViewModel extends GetxController {
       );
       _favRecipes.value = await _recipeRepository.getFavRecipes(userId);
     } catch (error) {
-      _errorMessage.value = "Falha ao carregar receitas: ${error.toString()}";
+      _errorMessage.value = "${l10n.errorListingRecipes}: ${error.toString()}";
     } finally {
       _isLoading.value = false;
     }
   }
 
-  Future<void> toggleFavorite(Recipe recipe) async {
+  Future<void> toggleFavorite(Recipe recipe, AppLocalizations l10n) async {
     try {
       _isLoading.value = true;
       _errorMessage.value = '';
@@ -53,7 +54,8 @@ class RecipesViewModel extends GetxController {
         _favRecipes.add(recipe);
       }
     } catch (error) {
-      _errorMessage.value = "Falha ao atualizar favorito: ${error.toString()}";
+      _errorMessage.value =
+          "${l10n.errorToUpdateFavorite}: ${error.toString()}";
     } finally {
       _isLoading.value = false;
     }

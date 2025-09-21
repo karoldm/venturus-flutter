@@ -1,4 +1,5 @@
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/favorites/favorites_viewmodel.dart';
 import 'package:recipes/ui/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +15,19 @@ class FavoritesView extends StatefulWidget {
 
 class _FavoritesViewState extends State<FavoritesView> {
   final viewModel = getIt<FavoritesViewModel>();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.getFavRecipes();
-    });
-  }
+  bool _initialized = false;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (!_initialized) {
+      _initialized = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        viewModel.getFavRecipes(l10n);
+      });
+    }
+
     return Obx(() {
       if (viewModel.isLoading) {
         return Center(
@@ -44,14 +47,14 @@ class _FavoritesViewState extends State<FavoritesView> {
               spacing: 32,
               children: [
                 Text(
-                  'Erro: ${viewModel.errorMessage}',
+                  '${viewModel.errorMessage}',
                   style: TextStyle(fontSize: 24),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    viewModel.getFavRecipes();
+                    viewModel.getFavRecipes(l10n);
                   },
-                  child: Text('TENTAR NOVAMENTE'),
+                  child: Text(l10n.tryAgain),
                 ),
               ],
             ),
@@ -69,7 +72,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                       child: Column(
                         children: [
                           Text(
-                            '${viewModel.favRecipes.length} favorita(s)',
+                            '${viewModel.favRecipes.length} ${l10n.favorites}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -107,7 +110,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                           ),
                           const SizedBox(height: 32),
                           Text(
-                            'Adicione suas receitas favoritas!',
+                            l10n.addFavoriteRecipes,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,

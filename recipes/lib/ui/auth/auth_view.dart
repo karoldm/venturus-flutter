@@ -201,7 +201,7 @@ class _AuthViewState extends State<AuthView>
         prefixIcon: const Icon(Icons.email_outlined),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      validator: viewModel.validateEmail,
+      validator: (value) => viewModel.validateEmail(value, l10n),
     );
   }
 
@@ -225,7 +225,7 @@ class _AuthViewState extends State<AuthView>
           ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        validator: viewModel.validatePassword,
+        validator: (value) => viewModel.validatePassword(value, l10n),
       ),
     );
   }
@@ -249,7 +249,7 @@ class _AuthViewState extends State<AuthView>
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      validator: viewModel.validateConfirmPassword,
+      validator: (value) => viewModel.validateConfirmPassword(value, l10n),
     );
   }
 
@@ -263,7 +263,7 @@ class _AuthViewState extends State<AuthView>
         prefixIcon: const Icon(Icons.person_outline),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      validator: viewModel.validateUsername,
+      validator: (value) => viewModel.validateUsername(value, l10n),
     );
   }
 
@@ -277,7 +277,7 @@ class _AuthViewState extends State<AuthView>
         prefixIcon: const Icon(Icons.image_outlined),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      validator: viewModel.validateAvatarUrl,
+      validator: (value) => viewModel.validateAvatarUrl(value, l10n),
     );
   }
 
@@ -285,7 +285,7 @@ class _AuthViewState extends State<AuthView>
     return SizedBox(
       height: 50,
       child: ElevatedButton(
-        onPressed: viewModel.submit,
+        onPressed: () => viewModel.submit(l10n),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

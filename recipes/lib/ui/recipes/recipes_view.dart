@@ -20,13 +20,11 @@ class _RecipesViewState extends State<RecipesView>
   late AnimationController _animationController;
   late Animation<double> _animation;
 
+  bool _initialized = false;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.loadRecipes();
-      _animationController.forward();
-    });
 
     _animationController = AnimationController(
       vsync: this,
@@ -49,6 +47,13 @@ class _RecipesViewState extends State<RecipesView>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    if (!_initialized) {
+      _initialized = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        viewModel.loadRecipes(l10n);
+      });
+    }
 
     return Obx(() {
       if (viewModel.isLoading) {
@@ -74,7 +79,7 @@ class _RecipesViewState extends State<RecipesView>
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    viewModel.loadRecipes();
+                    viewModel.loadRecipes(l10n);
                   },
                   child: Text(l10n.tryAgain),
                 ),

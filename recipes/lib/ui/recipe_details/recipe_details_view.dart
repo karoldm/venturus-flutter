@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/recipe_details/recipe_details_viewmodel.dart';
 import 'package:recipes/ui/widgets/recipe_row_details.dart';
 
@@ -22,12 +23,11 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
   late AnimationController _animationController;
   late Animation<double> _animation;
 
+  bool _initialized = false;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await viewModel.loadRecipe(widget.id);
-    });
 
     _animationController = AnimationController(
       vsync: this,
@@ -55,6 +55,15 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (!_initialized) {
+      _initialized = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        viewModel.loadRecipe(widget.id, l10n);
+      });
+    }
+
     return Obx(() {
       if (viewModel.isLoading) {
         return Center(
@@ -81,7 +90,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                   onPressed: () {
                     context.go('/');
                   },
-                  child: Text('VOLTAR'),
+                  child: Text(l10n.back),
                 ),
               ],
             ),
@@ -138,7 +147,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  'Ingredientes:',
+                                  "${l10n.ingredients}:",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -148,14 +157,14 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                                 Text(recipe?.ingredients.join('\n') ?? ''),
                               ],
                             )
-                          : Text('Nenhum ingrediente listado.'),
+                          : Text(l10n.noIngredients),
                       const SizedBox(height: 16),
                       recipe?.instructions.isNotEmpty ?? false
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  'Instruções:',
+                                  '${l10n.instructions}:',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -165,7 +174,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                                 Text(recipe?.instructions.join('\n') ?? ''),
                               ],
                             )
-                          : Text('Nenhuma instrução :('),
+                          : Text(l10n.noInstructions),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +182,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                           ElevatedButton.icon(
                             onPressed: () => context.go('/'),
                             icon: Icon(Icons.arrow_back),
-                            label: Text('Voltar'),
+                            label: Text(l10n.back),
                           ),
                           const SizedBox(width: 16),
                           Obx(() {
@@ -195,7 +204,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView>
                                 // nesse caso quando o isFavorite mudar
                                 key: ValueKey(viewModel.isFavorite),
                                 onPressed: () {
-                                  viewModel.toggleFavorite();
+                                  viewModel.toggleFavorite(l10n);
                                   _animationController.forward();
                                 },
                                 icon: Icon(

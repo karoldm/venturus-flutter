@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/profile/profile_viewmodel.dart';
 
 class ProfileView extends StatefulWidget {
@@ -28,6 +29,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Obx(() {
       if (viewModel.isLoading) {
         return const Center(child: CircularProgressIndicator());
@@ -92,8 +95,8 @@ class _ProfileViewState extends State<ProfileView> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: signOut,
-                label: const Text(
-                  "Sair",
+                label: Text(
+                  l10n.logout,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 icon: const Icon(Icons.logout),

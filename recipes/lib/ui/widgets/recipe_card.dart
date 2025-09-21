@@ -2,6 +2,7 @@ import 'package:recipes/data/models/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 import 'package:recipes/ui/recipes/recipes_viewmodel.dart';
 
 class RecipeCard extends StatelessWidget {
@@ -13,6 +14,7 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isFavorite = viewModel.favRecipes.any((fav) => fav.id == recipe.id);
+    final l10n = AppLocalizations.of(context)!;
 
     return Card(
       margin: EdgeInsets.symmetric(vertical: 16),
@@ -65,29 +67,33 @@ class RecipeCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (isFavorite) {
-                    viewModel.toggleFavorite(recipe);
+                    viewModel.toggleFavorite(recipe, l10n);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('${recipe.name} desfavoritada!'),
+                          content: Text(
+                            '${recipe.name} ${l10n.removedFromFavorites}',
+                          ),
                           duration: Duration(seconds: 3),
                           action: SnackBarAction(
-                            label: 'DESFAZER',
+                            label: l10n.undo,
                             onPressed: () {
-                              viewModel.toggleFavorite(recipe);
+                              viewModel.toggleFavorite(recipe, l10n);
                             },
                           ),
                         ),
                       );
                     }
                   } else {
-                    viewModel.toggleFavorite(recipe);
+                    viewModel.toggleFavorite(recipe, l10n);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('${recipe.name} favoritada!'),
+                          content: Text(
+                            '${recipe.name} ${l10n.addedToFavorites}',
+                          ),
                           duration: const Duration(seconds: 2),
                         ),
                       );

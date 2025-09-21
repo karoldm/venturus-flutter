@@ -48,10 +48,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avatarUrlHint => 'Enter your avatar URL';
 
   @override
-  String get signInButton => 'Sign In';
+  String get signInButton => 'SIGN IN';
 
   @override
-  String get signUpButton => 'Sign Up';
+  String get signUpButton => 'SIGN UP';
 
   @override
   String get noAccountQuestion => 'Don\'t have an account? ';
@@ -66,11 +66,110 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInLink => 'Sign in here';
 
   @override
-  String get tryAgain => 'Try again';
+  String get tryAgain => 'Try Again';
 
   @override
   String get recipes => 'recipe(s)';
 
   @override
   String get addFavoriteRecipes => 'Add your favorite recipes!';
+
+  @override
+  String get errorEmailRequired => 'Enter your email';
+
+  @override
+  String get errorEmailInvalid => 'Invalid email';
+
+  @override
+  String get errorPasswordRequired => 'Enter your password';
+
+  @override
+  String get errorPasswordTooShort => 'Minimum 8 characters';
+
+  @override
+  String get errorPasswordNeedsLowercase => 'Needs a lowercase letter';
+
+  @override
+  String get errorPasswordNeedsUppercase => 'Needs an uppercase letter';
+
+  @override
+  String get errorPasswordNeedsNumber => 'Needs a number';
+
+  @override
+  String get errorPasswordNeedsSpecialChar => 'Needs a special character';
+
+  @override
+  String get errorConfirmPasswordRequired => 'Confirm your password';
+
+  @override
+  String get errorPasswordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get errorUsernameRequired => 'Enter your username';
+
+  @override
+  String get errorUsernameTooShort => 'Minimum 3 characters';
+
+  @override
+  String get errorAvatarUrlRequired => 'Enter avatar URL';
+
+  @override
+  String get errorAvatarUrlInvalid => 'Invalid URL';
+
+  @override
+  String get messageEmailConfirmationSent => 'Confirmation email sent. Check your inbox.';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get errorListingRecipes => 'Error while listing recipes';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get ingredients => 'Ingredients';
+
+  @override
+  String get noIngredients => 'No ingredients found';
+
+  @override
+  String get instructions => 'Instructions';
+
+  @override
+  String get noInstructions => 'No instructions found';
+
+  @override
+  String get errorToFoundFavoriteRecipe => 'Error to find favorite recipe';
+
+  @override
+  String get errorToFondRecipe => 'Error to find recipe';
+
+  @override
+  String get errorToAddFavorite => 'Error to add recipe to favorites';
+
+  @override
+  String get errorToRemoveFavorite => 'Error to remove recipe from favotires';
+
+  @override
+  String get errorToUpdateFavorite => 'Error to update favorites';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get addedToFavorites => 'Added to favorites!';
+
+  @override
+  String get removedFromFavorites => 'Removed from favorites!';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get changeTheme => 'Change theme';
 }

@@ -3,6 +3,7 @@ import 'package:recipes/data/models/recipe.dart';
 import 'package:recipes/data/repositories/auth_repository.dart';
 import 'package:recipes/data/repositories/recipe_repository.dart';
 import 'package:recipes/di/service_locator.dart';
+import 'package:recipes/l10n/app_localizations.dart';
 
 class FavoritesViewModel extends GetxController {
   final _recipeRepository = getIt<RecipeRepository>();
@@ -17,7 +18,7 @@ class FavoritesViewModel extends GetxController {
   bool get isLoading => _isLoading.value;
   String? get errorMessage => _errorMessage.value;
 
-  Future<void> getFavRecipes() async {
+  Future<void> getFavRecipes(AppLocalizations l10n) async {
     try {
       _isLoading.value = true;
       _errorMessage.value = '';
@@ -30,7 +31,7 @@ class FavoritesViewModel extends GetxController {
       );
       _favRecipes.value = await _recipeRepository.getFavRecipes(userId);
     } catch (e) {
-      _errorMessage.value = 'Falha ao buscar receitas: ${e.toString()}';
+      _errorMessage.value = '${l10n.errorListingRecipes} ${e.toString()}';
     } finally {
       _isLoading.value = false;
     }
